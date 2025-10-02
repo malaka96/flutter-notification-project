@@ -8,18 +8,35 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Home page')),
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              LocalNotificationService.showInstanceNotifications(
-                title: "Job Alert",
-                body: "Mobile Application Developer",
-              );
-            },
-            child: Text('Generate a Notification'),
-          ),
-        ],
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                LocalNotificationService.showInstanceNotifications(
+                  title: "Job Alert",
+                  body: "Mobile Application Developer",
+                );
+              },
+              child: Text('Generate a Notification'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                DateTime duration = DateTime.now().add(
+                  const Duration(seconds: 5),
+                );
+                LocalNotificationService.showScheduledNotifications(
+                  title: "scheduled Notification",
+                  body: "you have been selected to ASE",
+                  scheduledData: duration,
+                );
+              },
+              child: Text('Generate a scheduled notification'),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class LocalNotificationService {
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -40,7 +41,7 @@ class LocalNotificationService {
         "General Notifications",
         importance: Importance.max,
         priority: Priority.high,
-        playSound: false
+        playSound: true,
       ),
     );
 
@@ -49,6 +50,31 @@ class LocalNotificationService {
       title,
       body,
       notificationDetails,
+    );
+  }
+
+  static Future<void> showScheduledNotifications({
+    required String title,
+    required String body,
+    required DateTime scheduledData,
+  }) async {
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: AndroidNotificationDetails(
+        "dafult_channel_id",
+        "General Notification",
+        importance: Importance.max,
+        priority: Priority.high,
+        playSound: true,
+      ),
+    );
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      title,
+      body,
+      tz.TZDateTime.from(scheduledData, tz.local),
+      notificationDetails,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
 }
