@@ -122,4 +122,37 @@ class LocalNotificationService {
     }
     return scheduledDate;
   }
+
+  static Future<void> showBigPictureNotification({
+    required String title,
+    required String body,
+    required String imageUrl,
+  }) async {
+    final BigPictureStyleInformation bigPictureStyleInformation =
+        BigPictureStyleInformation(
+          DrawableResourceAndroidBitmap(imageUrl),
+          largeIcon: DrawableResourceAndroidBitmap(imageUrl),
+          contentTitle: title,
+          summaryText: body,
+          htmlFormatContent: true,
+          htmlFormatContentTitle: true,
+        );
+
+    NotificationDetails notificationDetails = NotificationDetails(
+      android: AndroidNotificationDetails(
+        "default_channel_id",
+        "General Notification",
+        importance: Importance.max,
+        priority: Priority.high,
+        styleInformation: bigPictureStyleInformation,
+      ),
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      notificationDetails,
+    );
+  }
 }

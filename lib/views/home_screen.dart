@@ -47,6 +47,17 @@ class HomeScreen extends StatelessWidget {
               },
               child: Text('Generate recuring notifications'),
             ),
+
+            ElevatedButton(
+              onPressed: () {
+                LocalNotificationService.showBigPictureNotification(
+                  title: "Bigpicture Notification",
+                  body: "You have been promoted to SSE",
+                  imageUrl: "@mipmap/ic_launcher",
+                );
+              },
+              child: Text('Generate a bigpicture notification'),
+            ),
           ],
         ),
       ),
