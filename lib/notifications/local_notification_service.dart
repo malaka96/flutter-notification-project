@@ -77,4 +77,49 @@ class LocalNotificationService {
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
+
+  static Future<void> showRecuringNotification({
+    required String title,
+    required String body,
+    required int hour,
+    required int minute,
+  }) async {
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: AndroidNotificationDetails(
+        "default_channel_id",
+        "General Notification",
+        importance: Importance.max,
+        priority: Priority.high,
+        playSound: true,
+      ),
+    );
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      title,
+      body,
+      _nextInstanceOfTime(hour, minute),
+      notificationDetails,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
+  }
+
+  static tz.TZDateTime _nextInstanceOfTime(int hour, int minute) {
+    final now = tz.TZDateTime.now(tz.local);
+    var scheduledDate = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      hour,
+      minute,
+    );
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(
+        Duration(days: 1),
+      ); // for daily recurrence
+    }
+    return scheduledDate;
+  }
 }

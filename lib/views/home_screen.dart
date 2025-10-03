@@ -35,6 +35,18 @@ class HomeScreen extends StatelessWidget {
               },
               child: Text('Generate a scheduled notification'),
             ),
+
+            ElevatedButton(
+              onPressed: () {
+                LocalNotificationService.showRecuringNotification(
+                  title: "Recuring Notifcation",
+                  body: "You have been promoted to SE",
+                  hour: 11,
+                  minute: 19,
+                );
+              },
+              child: Text('Generate recuring notifications'),
+            ),
           ],
         ),
       ),
