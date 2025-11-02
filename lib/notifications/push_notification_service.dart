@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_notifications/notifications/local_notification_service.dart';
 
 class PushNotificationService {
   static final firebaseMessaging = FirebaseMessaging.instance;
@@ -35,5 +36,29 @@ class PushNotificationService {
     GlobalKey<NavigatorState> navigatorKey,
   ) async {
     navigatorKey.currentState?.pushNamed("/data-viewer", arguments: message);
+  }
+
+  static Future<void> onForeroundNotificationTapped(
+    RemoteMessage message,
+    GlobalKey<NavigatorState> navigatorKey,
+  ) async {
+    //String payloadData = jsonEncode(message.data);
+
+    print("Got the message in foreground");
+
+    if (message.notification != null) {
+      await LocalNotificationService.showInstanceNotifications(
+        title: message.notification!.title!,
+        body: message.notification!.body!,
+        //payload: payloadData,
+      );
+
+
+
+
+      //this will automatically display the payload page
+      // await navigatorKey.currentState!
+      //     .pushNamed('/message', arguments: message);
+    }
   }
 }
